@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SaleController;
 
 /* Redirect 404 */
 Route::fallback(function () {
@@ -69,5 +70,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::delete('/customers/destroy/{id}', 'destroy')->name('customers.destroy');
     });
 
+    Route::controller(SaleController::class)->group(function () {
+        Route::get('/sales', 'index')->name('sales.index');
+        Route::get('/sales/{id}', 'info')->name('sales.info');
+        Route::post('/sales/store', 'store')->name('sales.store');
+        Route::post('/sales/update/{id}', 'update')->name('sales.update');
+        Route::delete('/sales/destroy/{id}', 'destroy')->name('sales.destroy');
+    });
 
 });

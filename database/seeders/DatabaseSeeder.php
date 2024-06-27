@@ -13,6 +13,8 @@ use App\Models\Product;
 use App\Models\Batch;
 use App\Models\Supplier;
 use App\Models\Customer;
+use App\Models\Sale;
+use App\Models\SaleDetail;
 
 class DatabaseSeeder extends Seeder
 {
@@ -115,6 +117,38 @@ class DatabaseSeeder extends Seeder
         ];
         foreach ($customers as $customer) {
             Customer::create($customer);
+        }
+        /* Ventas */
+        $users = User::take(2)->get();
+        $customers = Customer::all();
+        $products = Product::all();
+
+        foreach ($users as $user) {
+            for ($i = 0; $i < 2; $i++) {
+                $sale = Sale::create([
+                    'date' => now()->subDays(rand(1, 30)),
+                    'total' => 0, // Actualizado más tarde
+                    'user_id' => $user->id,
+                    'customer_id' => $customers->random()->id,
+                ]);
+
+                $total = 0;
+                for ($j = 0; $j < 5; $j++) {
+                    $product = $products->random();
+                    $quantity = rand(1, 5);
+                    $price = $product->price;
+                    $total += $price * $quantity;
+
+                    SaleDetail::create([
+                        'sale_id' => $sale->id,
+                        'product_id' => $product->id,
+                        'price' => $price,
+                        'quantity' => $quantity,
+                    ]);
+                }
+
+                $sale->update(['total' => $total]);
+            }
         }
     }
 }
