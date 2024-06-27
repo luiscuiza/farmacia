@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\LaboratoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\BatchController;
+
 /* Redirect 404 */
 Route::fallback(function () {
     return redirect('/');
@@ -23,5 +27,20 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         return view('dashboard');
     })->name('dashboard');
 
+    Route::controller(LaboratoryController::class)->group(function () {
+        Route::get('/laboratories', 'index')->name('laboratories.index');
+        Route::get('/laboratories/{id}', 'info')->name('laboratories.info');
+        Route::post('/laboratories/store', 'store')->name('laboratories.store');
+        Route::post('/laboratories/update/{id}', 'update')->name('laboratories.update');
+        Route::delete('/laboratories/destroy/{id}', 'destroy')->name('laboratories.destroy');
+    });
+    
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/products', 'index')->name('products.index');
+    });
+    
+    Route::controller(BatchController::class)->group(function () {
+        Route::get('/batches', 'index')->name('batches.index');
+    });
 
 });
