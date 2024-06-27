@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaboratoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BatchController;
+use App\Http\Controllers\SupplierController;
 
 /* Redirect 404 */
 Route::fallback(function () {
@@ -51,4 +52,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::delete('/batches/destroy/{id}', 'destroy')->name('batches.destroy');
     });
 
+    Route::controller(SupplierController::class)->group(function () {
+        Route::get('/suppliers', 'index')->name('suppliers.index');
+        Route::get('/suppliers/{id}', 'info')->name('suppliers.info');
+        Route::post('/suppliers/store', 'store')->name('suppliers.store');
+        Route::post('/suppliers/update/{id}', 'update')->name('suppliers.update');
+        Route::delete('/suppliers/destroy/{id}', 'destroy')->name('suppliers.destroy');
+    });
+
+    
 });

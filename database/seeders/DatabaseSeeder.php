@@ -6,12 +6,12 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-use App\Models\User;
 use App\Models\Profile;
-
+use App\Models\User;
 use App\Models\Laboratory;
 use App\Models\Product;
 use App\Models\Batch;
+use App\Models\Supplier;
 
 class DatabaseSeeder extends Seeder
 {
@@ -82,5 +82,32 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+        /* Proveedores */
+        $suppliers = [
+            ['name' => 'Proveedor A', 'email' => 'proveedora@example.com', 'phone' => '555123456', 'laboratory_id' => 1],
+            ['name' => 'Proveedor B', 'email' => 'proveedorb@example.com', 'phone' => '555654321', 'laboratory_id' => 2],
+            ['name' => 'Proveedor C', 'email' => 'proveedorc@example.com', 'phone' => '555987654', 'laboratory_id' => 3],
+            ['name' => 'Proveedor D', 'email' => 'proveedord@example.com', 'phone' => '555456789', 'laboratory_id' => 4],
+            ['name' => 'Proveedor E', 'email' => 'proveedore@example.com', 'phone' => '555321987'],
+            ['name' => 'Proveedor F', 'email' => 'proveedorf@example.com', 'phone' => '555789123'],
+            ['name' => 'Proveedor G', 'email' => 'proveedorg@example.com', 'phone' => '555123789'],
+            ['name' => 'Proveedor H', 'email' => 'proveedorh@example.com', 'phone' => '555987321'],
+            ['name' => 'Proveedor I', 'email' => 'proveedori@example.com', 'phone' => '555654987'],
+            ['name' => 'Proveedor J', 'email' => 'proveedorj@example.com', 'phone' => '555789654'],
+        ];
+        foreach ($suppliers as $supplierData) {
+            Supplier::create($supplierData);
+        }
+        $suppliers = Supplier::all();
+        $products = Product::all();
+        foreach ($products as $product) {
+            $productSuppliers = $suppliers->random(rand(1, 3));
+            foreach ($productSuppliers as $supplier) {
+                $product->suppliers()->attach($supplier);
+            }
+        }
+
+
+
     }
 }
