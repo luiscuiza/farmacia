@@ -7,6 +7,7 @@ use App\Http\Controllers\LaboratoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CustomerController;
 
 /* Redirect 404 */
 Route::fallback(function () {
@@ -60,5 +61,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::delete('/suppliers/destroy/{id}', 'destroy')->name('suppliers.destroy');
     });
 
-    
+    Route::controller(CustomerController::class)->group(function () {
+        Route::get('/customers', 'index')->name('customers.index');
+        Route::get('/customers/{id}', 'show')->name('customers.show');
+        Route::post('/customers/store', 'store')->name('customers.store');
+        Route::post('/customers/update/{id}', 'update')->name('customers.update');
+        Route::delete('/customers/destroy/{id}', 'destroy')->name('customers.destroy');
+    });
+
+
 });

@@ -24,6 +24,9 @@
                     <x-nav-link href="{{ route('suppliers.index') }}" :active="request()->routeIs('suppliers.index')">
                         {{ __('Proveedores') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('customers.index') }}" :active="request()->routeIs('customers.index')">
+                        {{ __('Clientes') }}
+                    </x-nav-link>
 
 
 

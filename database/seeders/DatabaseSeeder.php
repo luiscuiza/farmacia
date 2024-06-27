@@ -12,6 +12,7 @@ use App\Models\Laboratory;
 use App\Models\Product;
 use App\Models\Batch;
 use App\Models\Supplier;
+use App\Models\Customer;
 
 class DatabaseSeeder extends Seeder
 {
@@ -106,8 +107,14 @@ class DatabaseSeeder extends Seeder
                 $product->suppliers()->attach($supplier);
             }
         }
-
-
-
+        /* Clientes */
+        $customers = [
+            [ 'name' => 'Juan', 'lastname' => 'Pérez', 'dni_nit' => '123456789' ],
+            [ 'name' => 'María', 'lastname' => 'González', 'dni_nit' => '987654321' ],
+            [ 'name' => 'Luis', 'lastname' => 'Martínez', 'dni_nit' => '456123789' ],
+        ];
+        foreach ($customers as $customer) {
+            Customer::create($customer);
+        }
     }
 }
