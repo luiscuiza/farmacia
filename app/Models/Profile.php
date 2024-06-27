@@ -9,10 +9,10 @@ class Profile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'lastname', 'phone', 'email', 'user_id'];
+    protected $fillable = ['name', 'lastname', 'phone'];
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class);
     }
 }

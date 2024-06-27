@@ -10,6 +10,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('role', 10)->default('user')->after('name');
+            $table->unsignedBigInteger('profile_id')->nullable()->after('role');
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('set null');
         });
     }
     
@@ -17,6 +19,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('role');
+            $table->dropForeign(['profile_id']);
+            $table->dropColumn('profile_id');
         });
     }
 };
