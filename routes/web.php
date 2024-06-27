@@ -45,6 +45,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     
     Route::controller(BatchController::class)->group(function () {
         Route::get('/batches', 'index')->name('batches.index');
+        Route::get('/batches/{id}', 'info')->name('batches.info');
+        Route::post('/batches/store', 'store')->name('batches.store');
+        Route::post('/batches/update/{id}', 'update')->name('batches.update');
+        Route::delete('/batches/destroy/{id}', 'destroy')->name('batches.destroy');
     });
 
 });

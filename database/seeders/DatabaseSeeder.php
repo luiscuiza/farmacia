@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Str; 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -63,6 +64,23 @@ class DatabaseSeeder extends Seeder
         ];
         foreach ($products as $productData) {
             Product::create($productData);
+        }
+        /* Crear Lotes */
+        $products = Product::all();
+
+        foreach ($products as $product) {
+            $numBatches = rand(2, 3);
+            for ($i = 0; $i < $numBatches; $i++) {
+                $quantity = rand(10, 100);
+                $stock = rand(0, $quantity);
+                Batch::create([
+                    'code' => strtoupper(Str::random(10)),
+                    'stock' => $stock,
+                    'quantity' => $quantity,
+                    'expiration' => now()->addDays(rand(-30, 90)),
+                    'product_id' => $product->id,
+                ]);
+            }
         }
     }
 }
