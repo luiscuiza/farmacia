@@ -43,5 +43,26 @@ class DatabaseSeeder extends Seeder
         foreach ($laboratories as $labData) {
             Laboratory::create($labData);
         }
+        /* Crear Productos */
+        $products = [
+            ['name' => 'Paracetamol', 'price' => 10.50, 'barcode' => '1234567890123', 'description' => 'Analgésico y antipirético', 'laboratory_id' => 1],
+            ['name' => 'Ibuprofeno', 'price' => 15.75, 'barcode' => '9876543210987', 'description' => 'Antiinflamatorio y analgésico', 'laboratory_id' => 2],
+            ['name' => 'Aspirina', 'price' => 8.25, 'barcode' => '4567891234567', 'description' => 'Analgésico y anticoagulante', 'laboratory_id' => 3],
+            ['name' => 'Amoxicilina', 'price' => 20.00, 'barcode' => '7894561237890', 'description' => 'Antibiótico de amplio espectro', 'laboratory_id' => 4],
+            ['name' => 'Vitamina C', 'price' => 12.00, 'barcode' => '3216549870123', 'description' => 'Suplemento vitamínico', 'laboratory_id' => 1],
+            ['name' => 'Omeprazol', 'price' => 18.50, 'barcode' => '6547893210987', 'description' => 'Inhibidor de la bomba de protones', 'laboratory_id' => 2],
+            ['name' => 'Diclofenaco', 'price' => 9.00, 'barcode' => '9873216540123', 'description' => 'Antiinflamatorio y analgésico', 'laboratory_id' => 3],
+            ['name' => 'Clorfenamina', 'price' => 6.75, 'barcode' => '1597534860123', 'description' => 'Antihistamínico', 'laboratory_id' => 4],
+            ['name' => 'Loratadina', 'price' => 14.50, 'barcode' => '7531594860123', 'description' => 'Antihistamínico', 'laboratory_id' => 1],
+            ['name' => 'Metformina', 'price' => 22.00, 'barcode' => '3579514860123', 'description' => 'Antidiabético', 'laboratory_id' => 2],
+            ['name' => 'Simvastatina', 'price' => 25.00, 'barcode' => '9517534860123', 'description' => 'Reductor de colesterol', 'laboratory_id' => 3],
+            ['name' => 'Atorvastatina', 'price' => 28.00, 'barcode' => '7896541230123', 'description' => 'Reductor de colesterol', 'laboratory_id' => 4],
+            ['name' => 'Losartán', 'price' => 30.00, 'barcode' => '1237894560123', 'description' => 'Antihipertensivo', 'laboratory_id' => 1],
+            ['name' => 'Enalapril', 'price' => 27.50, 'barcode' => '4561237890123', 'description' => 'Antihipertensivo', 'laboratory_id' => 2],
+            ['name' => 'Furosemida', 'price' => 10.00, 'barcode' => '7891234560123', 'description' => 'Diurético', 'laboratory_id' => 3],
+        ];
+        foreach ($products as $productData) {
+            Product::create($productData);
+        }
     }
 }

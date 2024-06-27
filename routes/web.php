@@ -37,6 +37,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     
     Route::controller(ProductController::class)->group(function () {
         Route::get('/products', 'index')->name('products.index');
+        Route::get('/products/{id}', 'info')->name('products.info');
+        Route::post('/products/store', 'store')->name('products.store');
+        Route::post('/products/update/{id}', 'update')->name('products.update');
+        Route::delete('/products/destroy/{id}', 'destroy')->name('products.destroy');
     });
     
     Route::controller(BatchController::class)->group(function () {
