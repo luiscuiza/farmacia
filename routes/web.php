@@ -9,6 +9,8 @@ use App\Http\Controllers\BatchController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DashboardController;
 
 /* Redirect 404 */
 Route::fallback(function () {
@@ -26,9 +28,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
     Route::controller(LaboratoryController::class)->group(function () {
         Route::get('/laboratories', 'index')->name('laboratories.index');
@@ -77,5 +77,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::post('/sales/update/{id}', 'update')->name('sales.update');
         Route::delete('/sales/destroy/{id}', 'destroy')->name('sales.destroy');
     });
+
+    
 
 });

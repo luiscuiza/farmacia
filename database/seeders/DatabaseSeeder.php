@@ -89,10 +89,10 @@ class DatabaseSeeder extends Seeder
         $suppliers = [
             ['name' => 'Proveedor A', 'email' => 'proveedora@example.com', 'phone' => '555123456', 'laboratory_id' => 1],
             ['name' => 'Proveedor B', 'email' => 'proveedorb@example.com', 'phone' => '555654321', 'laboratory_id' => 2],
-            ['name' => 'Proveedor C', 'email' => 'proveedorc@example.com', 'phone' => '555987654', 'laboratory_id' => 3],
-            ['name' => 'Proveedor D', 'email' => 'proveedord@example.com', 'phone' => '555456789', 'laboratory_id' => 4],
-            ['name' => 'Proveedor E', 'email' => 'proveedore@example.com', 'phone' => '555321987'],
-            ['name' => 'Proveedor F', 'email' => 'proveedorf@example.com', 'phone' => '555789123'],
+            ['name' => 'Proveedor C', 'email' => 'proveedorc@example.com', 'phone' => '555987654', 'laboratory_id' => 2],
+            ['name' => 'Proveedor D', 'email' => 'proveedord@example.com', 'phone' => '555456789', 'laboratory_id' => 3],
+            ['name' => 'Proveedor E', 'email' => 'proveedore@example.com', 'phone' => '555321987', 'laboratory_id' => 3],
+            ['name' => 'Proveedor F', 'email' => 'proveedorf@example.com', 'phone' => '555789123', 'laboratory_id' => 3],
             ['name' => 'Proveedor G', 'email' => 'proveedorg@example.com', 'phone' => '555123789'],
             ['name' => 'Proveedor H', 'email' => 'proveedorh@example.com', 'phone' => '555987321'],
             ['name' => 'Proveedor I', 'email' => 'proveedori@example.com', 'phone' => '555654987'],
@@ -122,23 +122,20 @@ class DatabaseSeeder extends Seeder
         $users = User::take(2)->get();
         $customers = Customer::all();
         $products = Product::all();
-
         foreach ($users as $user) {
             for ($i = 0; $i < 2; $i++) {
                 $sale = Sale::create([
                     'date' => now()->subDays(rand(1, 30)),
-                    'total' => 0, // Actualizado más tarde
+                    'total' => 0,
                     'user_id' => $user->id,
                     'customer_id' => $customers->random()->id,
                 ]);
-
                 $total = 0;
                 for ($j = 0; $j < 5; $j++) {
                     $product = $products->random();
                     $quantity = rand(1, 5);
                     $price = $product->price;
                     $total += $price * $quantity;
-
                     SaleDetail::create([
                         'sale_id' => $sale->id,
                         'product_id' => $product->id,
@@ -146,9 +143,35 @@ class DatabaseSeeder extends Seeder
                         'quantity' => $quantity,
                     ]);
                 }
-
                 $sale->update(['total' => $total]);
             }
         }
+        foreach ($users as $user) {
+            $date = now();
+            for ($i = 0; $i < 3; $i++) {
+                $sale = Sale::create([
+                    'date' => $date->copy(),
+                    'total' => 0,
+                    'user_id' => $user->id,
+                    'customer_id' => $customers->random()->id,
+                ]);
+                $total = 0;
+                for ($j = 0; $j < 3; $j++) {
+                    $product = $products->random();
+                    $quantity = rand(1, 5);
+                    $price = $product->price;
+                    $total += $price * $quantity;
+                    SaleDetail::create([
+                        'sale_id' => $sale->id,
+                        'product_id' => $product->id,
+                        'price' => $price,
+                        'quantity' => $quantity,
+                    ]);
+                }
+                $sale->update(['total' => $total]);
+            }
+        }
+
+        
     }
 }
