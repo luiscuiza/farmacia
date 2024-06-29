@@ -11,6 +11,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CartController;
 
 /* Redirect 404 */
 Route::fallback(function () {
@@ -42,6 +43,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/products', 'index')->name('products.index');
         Route::get('/products/{id}', 'info')->name('products.info');
         Route::post('/products/store', 'store')->name('products.store');
+        Route::post('/products/search', 'search')->name('products.search');
         Route::post('/products/update/{id}', 'update')->name('products.update');
         Route::delete('/products/destroy/{id}', 'destroy')->name('products.destroy');
     });
@@ -78,6 +80,16 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::delete('/sales/destroy/{id}', 'destroy')->name('sales.destroy');
     });
 
+    Route::controller(CartController::class)->group(function () {
+        Route::get('/cart', 'index')->name('cart.index');
+        Route::post('/cart/add', 'add')->name('cart.add');
+        Route::get('/cart/clear', 'clear')->name('cart.clear');
+        Route::get('/cart/details', 'details')->name('cart.details');
+        Route::post('/cart/update', 'update')->name('cart.update');
+        Route::post('/cart/remove', 'remove')->name('cart.remove');
+        
+        Route::post('/cart/sell', 'sell')->name('cart.sell');
+    });
     
 
 });

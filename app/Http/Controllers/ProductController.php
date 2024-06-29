@@ -68,4 +68,26 @@ class ProductController extends Controller
             return response()->json(['success' => false, 'message' => 'Error al eliminar el producto.'], 500);
         }
     }
+    
+    public function search(Request $request)
+    {
+        $query = $request->input('search');
+        if (!$query) {
+            return response()->json(['products' => []], 200);
+        }
+
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('description', 'LIKE', "%{$query}%")
+            ->orWhere('barcode', 'LIKE', "%{$query}%")
+            ->with(['batches' => function($query) {
+                $query->where('expiration', '>', now());
+            }])
+            ->get();
+
+        $products->each(function($product) {
+            $product->stock = $product->batches->sum('quantity');
+        });
+
+        return response()->json(['products' => $products], 200);
+    }
 }
