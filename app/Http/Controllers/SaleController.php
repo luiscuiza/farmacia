@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Models\Customer;
@@ -11,14 +13,19 @@ use App\Models\User;
 
 class SaleController extends Controller
 {
+
     public function index()
     {
-        $sales = Sale::with('customer', 'user', 'saleDetails.product')->paginate(10);
-        $customers = Customer::all();
-        $products = Product::all();
+        $user = Auth::user();
+        if ($user->role == 'admin') {
+            $sales = Sale::with('customer', 'user', 'saleDetails.product')->orderBy('date', 'desc')->paginate(10);
+        } else {
+            $sales = Sale::with('customer', 'user', 'saleDetails.product')->where('user_id', $user->id)->orderBy('date', 'desc')->paginate(10);
+        }
         $users = User::all();
-
-        return view('sale.index', compact('sales', 'customers', 'products', 'users'));
+        $products = Product::all();
+        $customers = Customer::all();
+        return view('sale.index', compact('sales', 'users', 'customers', 'products'));
     }
 
     public function store(Request $request)
