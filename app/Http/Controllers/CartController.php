@@ -86,7 +86,7 @@ class CartController extends Controller
         session()->put('total', 0);
         session()->forget('cart');
         session()->flash('success', 'Carrito vaciado.');
-        return redirect()->route('cart.index');
+        return response()->json(['success' => true, 'message' => 'Carrito vaciado.']);
     }
 
     public function remove(Request $request)
@@ -110,47 +110,47 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
         if (empty($cart)) {
-            return redirect()->route('cart.index')->with('error', '¡El carrito está vacío!');
+            return response()->json(['success' => false, 'message' => '¡El carrito está vacío!']);
         }
-    
+
         // Validar los datos del cliente
         $request->validate([
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'dni_nit' => 'required|string|max:255',
         ]);
-    
+
         // Crear o buscar al cliente
         $customer = Customer::firstOrCreate(
             ['dni_nit' => $request->dni_nit],
             ['name' => $request->name, 'lastname' => $request->lastname]
         );
-    
+
         // Verificar el stock disponible antes de realizar la venta
         $insufficientStock = [];
         foreach ($cart as $id => $details) {
             $product = Product::with(['batches' => function($query) {
                 $query->where('expiration', '>', now())->orderBy('expiration');
             }])->find($id);
-    
+
             if (!$product) {
-                return redirect()->route('cart.index')->with('error', "Producto con ID $id no encontrado.");
+                return response()->json(['success' => false, 'message' => "Producto con ID $id no encontrado."]);
             }
-    
+
             $availableStock = $product->batches->sum('quantity');
             if ($details['quantity'] > $availableStock) {
                 $insufficientStock[$product->name] = $availableStock;
             }
         }
-    
+
         if (!empty($insufficientStock)) {
             $errorMessages = [];
             foreach ($insufficientStock as $productName => $availableStock) {
                 $errorMessages[] = "No hay suficiente stock de $productName. Stock disponible: $availableStock.";
             }
-            return redirect()->route('cart.index')->with('error', implode("\n", $errorMessages));
+            return response()->json(['success' => false, 'message' => implode("\n", $errorMessages)]);
         }
-    
+
         // Crear la venta
         $sale = Sale::create([
             'date' => now(),
@@ -158,21 +158,21 @@ class CartController extends Controller
             'user_id' => auth()->id(),
             'customer_id' => $customer->id,
         ]);
-    
+
         // Crear detalles de venta y actualizar el stock
         $saleTotal = 0;
         foreach ($cart as $id => $details) {
             $product = Product::with(['batches' => function($query) {
                 $query->where('expiration', '>', now())->orderBy('expiration');
             }])->find($id);
-    
+
             $quantityToDeduct = $details['quantity'];
-    
+
             foreach ($product->batches as $batch) {
                 if ($quantityToDeduct <= 0) {
                     break;
                 }
-    
+
                 if ($batch->quantity >= $quantityToDeduct) {
                     $batch->quantity -= $quantityToDeduct;
                     $batch->save();
@@ -183,26 +183,27 @@ class CartController extends Controller
                     $batch->save();
                 }
             }
-    
+
             SaleDetail::create([
                 'sale_id' => $sale->id,
                 'product_id' => $id,
                 'quantity' => $details['quantity'],
                 'price' => $details['price'],
             ]);
-    
+
             $saleTotal += $details['price'] * $details['quantity'];
         }
-    
+
         // Actualizar el total de la venta
         $sale->total = $saleTotal;
         $sale->save();
-    
+
         // Limpiar el carrito
         session()->put('total', 0);
         session()->forget('cart');
-    
-        return redirect()->route('cart.index')->with('success', '¡Venta realizada correctamente!');
+
+        return response()->json(['success' => true, 'message' => '¡Venta realizada correctamente!']);
     }
+
     
 }

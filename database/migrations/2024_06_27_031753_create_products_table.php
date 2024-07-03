@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignId('laboratory_id')->nullable()->constrained('laboratories')->onDelete('set null');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

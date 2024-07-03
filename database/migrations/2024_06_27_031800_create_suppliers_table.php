@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->foreignId('laboratory_id')->nullable()->constrained('laboratories')->onDelete('set null');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -97,7 +97,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::controller(CartController::class)->group(function () {
             Route::get('/cart', 'index')->name('cart.index');
             Route::post('/cart/add', 'add')->name('cart.add');
-            Route::get('/cart/clear', 'clear')->name('cart.clear');
+            Route::post('/cart/clear', 'clear')->name('cart.clear');
             Route::get('/cart/details', 'details')->name('cart.details');
             Route::post('/cart/update', 'update')->name('cart.update');
             Route::post('/cart/remove', 'remove')->name('cart.remove');

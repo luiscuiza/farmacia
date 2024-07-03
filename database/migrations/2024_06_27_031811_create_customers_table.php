@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('dni_nit')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

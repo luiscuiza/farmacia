@@ -12,6 +12,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
         <!-- Boostrap -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
@@ -29,12 +30,18 @@
             @endif
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                <div class="py-3 px-4">
+                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 p-10">
+                        {{ $slot }}
+                    </div>
+                </div>
             </main>
         </div>
         @stack('modals')
-        @livewireScripts
+        <!-- Incluir jQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        @livewireScripts
     </body>
 </html>
