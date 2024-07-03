@@ -1,3 +1,7 @@
+@php
+    $user = Auth::user();
+@endphp
+
 {{-- Dialog Info --}}
 <script>
     function showInfo(id) {
@@ -82,6 +86,7 @@
     }
 </script>
 
+@if ($user->role == 'admin')
 {{-- Dialog Delete --}}
 <script>
     function confirmDelete(id) {
@@ -115,5 +120,4 @@
         });
     }
 </script>
-
-
+@endif

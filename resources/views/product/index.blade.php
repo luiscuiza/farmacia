@@ -1,16 +1,27 @@
+@php
+    $user = Auth::user();
+@endphp
+
+
 <x-app-layout>
     <!-- Header -->
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center bg-white">
-            <h2 class="h5 text-dark font-weight-bold">
-                {{ __('Productos') }}
-            </h2>
-            <button class="btn btn-success d-flex align-items-center" onclick="showNew()">
-                <i class="fa fa-plus me-2"></i> Nuevo Producto
-            </button>
-        </div>
+        <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.index')">
+            {{ __('Productos') }}
+        </x-nav-link>
+        @if ($user->role == 'admin')
+            <x-nav-link href="{{ route('batches.index') }}" :active="request()->routeIs('batches.index')">
+                {{ __('Lotes') }}
+            </x-nav-link>
+        @endif
     </x-slot>
-
+    @if ($user->role == 'admin')
+        <x-slot name="options">
+            <button class="btn btn-success d-flex align-items-center m-2.5" onclick="showNew()">
+                <i class="fa fa-plus me-2"></i> Nuevo Producto
+            </button>  
+        </x-slot>
+    @endif
     <!-- Contenido -->
     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
         <div class="container py-3">
@@ -32,12 +43,14 @@
                                 <a class="btn btn-primary" onclick="showInfo({{ $product->id }})">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a class="btn btn-warning" onclick="showEdit({{ $product->id }})">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a class="btn btn-danger" onclick="confirmDelete({{ $product->id }})">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                @if ($user->role == 'admin')
+                                    <a class="btn btn-warning" onclick="showEdit({{ $product->id }})">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-danger" onclick="confirmDelete({{ $product->id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

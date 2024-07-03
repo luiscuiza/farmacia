@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
     {
         /* Crear Perfil & Usuario */
         $admin = Profile::create(["name" => "Luis", "lastname" => "Cuiza"]);
-        $user = Profile::create(["name" => "Alfredo", "lastname" => "Duran"]);
+        $user = Profile::create(["name" => "Alfredo", "lastname" => "Duran","phone" => "666999"]);
         User::create([
             'name' => 'admin',
             'role' => 'admin',

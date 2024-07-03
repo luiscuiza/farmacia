@@ -12,6 +12,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CustomUserProfileController;
 
 /* Redirect 404 */
 Route::fallback(function () {
@@ -27,12 +28,23 @@ Route::get('/', function () {
     }
 });
 
+Route::get('/register', function () { return redirect('/dashboard'); });
+Route::get('/forgot-password', function () { return redirect('/dashboard'); });
+
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
 
     /* Rutas ara usuarios con el rol admin */
-
     Route::middleware(['role:admin'])->group(function () {
        
+        Route::controller(CustomUserProfileController::class)->group(function () {
+            Route::get('/users', 'index')->name('users.index');
+            Route::get('/users/{id}', 'info')->name('users.info');
+            Route::post('/users/store', 'store')->name('users.store');
+            Route::post('/users/update/{id}', 'update')->name('users.update');
+            Route::post('/users/resetpassword/{id}', 'resetpassword')->name('users.resetpassword');
+            Route::delete('/users/destroy/{id}', 'destroy')->name('users.destroy');
+        });
+
         Route::controller(LaboratoryController::class)->group(function () {
             Route::get('/laboratories', 'index')->name('laboratories.index');
             Route::get('/laboratories/{id}', 'info')->name('laboratories.info');
@@ -68,10 +80,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
         Route::controller(CustomerController::class)->group(function () {
             Route::get('/customers', 'index')->name('customers.index');
-            Route::get('/customers/{id}', 'show')->name('customers.show');
+            Route::get('/customers/{id}', 'info')->name('customers.info');
             Route::post('/customers/store', 'store')->name('customers.store');
             Route::post('/customers/update/{id}', 'update')->name('customers.update');
             Route::delete('/customers/destroy/{id}', 'destroy')->name('customers.destroy');
+        });
+
+        Route::controller(SaleController::class)->group(function () {
+            //Route::get('/sales', 'index')->name('sales.index');
+            //Route::get('/sales/{id}', 'info')->name('sales.info');
+            //Route::post('/sales/store', 'store')->name('sales.store');
+            Route::post('/sales/update/{id}', 'update')->name('sales.update');
+            Route::delete('/sales/destroy/{id}', 'destroy')->name('sales.destroy');
         });
 
     });
@@ -90,8 +110,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             Route::get('/sales', 'index')->name('sales.index');
             Route::get('/sales/{id}', 'info')->name('sales.info');
             Route::post('/sales/store', 'store')->name('sales.store');
-            Route::post('/sales/update/{id}', 'update')->name('sales.update');
-            Route::delete('/sales/destroy/{id}', 'destroy')->name('sales.destroy');
         });
 
         Route::controller(CartController::class)->group(function () {

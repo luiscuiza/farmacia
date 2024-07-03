@@ -1,15 +1,26 @@
 <x-app-layout>
     <!-- Header -->
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center bg-white">
-            <h2 class="h5 text-dark font-weight-bold">
+        <!-- Header -->
+        <x-slot name="header">
+            <x-nav-link href="{{ route('suppliers.index') }}" :active="request()->routeIs('suppliers.index')">
+                {{ __('Proveedores') }}
+            </x-nav-link>
+            <x-nav-link href="{{ route('laboratories.index') }}" :active="request()->routeIs('laboratories.index')">
                 {{ __('Laboratorios') }}
-            </h2>
-            <button class="btn btn-success d-flex align-items-center" onclick="showNew()">
-                <i class="fa fa-plus me-2"></i> Nuevo Registro
+            </x-nav-link>
+            <x-nav-link href="{{ route('customers.index') }}" :active="request()->routeIs('customers.index')">
+                {{ __('Clientes') }}
+            </x-nav-link>
+        </x-slot>
+        <x-slot name="options">
+            <button class="btn btn-success d-flex align-items-center m-2.5" onclick="showNew()">
+                <i class="fa fa-plus me-2"></i> Nuevo Laboratorio
             </button>
-        </div>
-    </x-slot>
+        </x-slot>
+
+
+
+
 
     <!-- Contenido -->
     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">

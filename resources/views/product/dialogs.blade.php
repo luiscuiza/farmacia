@@ -1,3 +1,8 @@
+@php
+    $user = Auth::user();
+@endphp
+
+@if ($user->role == 'admin')
 {{-- Dialog New/Edit --}}
 <form id="newedit" style="display: none">
     <div class="mb-3">
@@ -133,6 +138,7 @@
         });
     }
 </script>
+@endif
 
 {{-- Dialog Info --}}
 
@@ -170,7 +176,7 @@
 </script>
 
 {{-- Dialog Delete --}}
-
+@if ($user->role == 'admin')
 <script>
     function confirmDelete(id) {
         $.dialog({
@@ -203,3 +209,4 @@
         });
     }
 </script>
+@endif

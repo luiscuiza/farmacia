@@ -3,32 +3,30 @@
 @endphp
 
 <x-app-layout>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-slot name="header">
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        {{ __('Dashboard') }}
-                    </h2>
-                </x-slot>
-                @if ($user->role == 'admin')
-                    @include('user.admin-dashboard', [
-                        'totalSalesToday' => $totalSalesToday,
-                        'totalSalesMonth' => $totalSalesMonth,
-                        'lowStockProducts' => $lowStockProducts,
-                        'outStockProducts' => $outStockProducts,
-                        'expiredsMonth' => $expiredsMonth,
-                        'expiringNextWeek' => $expiringNextWeek,
-                        'expiredBatches' => $expiredBatches,
-                        'expiredProducts' => $expiredProducts,
-                    ])
-                @elseif ($user->role == 'user')
-                    @include('user.user-dashboard', [
-                        'totalSalesToday' => $totalSalesToday,
-                        'totalSalesMonth' => $totalSalesMonth,
-                    ])
-                @endif
+    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        <x-slot name="header">
+            <div class="d-flex justify-content-between align-items-center bg-white">
+                <h2 class="h5 text-dark font-weight-bold">
+                    {{ __('Dashboard') }}
+                </h2>
             </div>
-        </div>
+        </x-slot>
+        @if ($user->role == 'admin')
+            @include('user.admin-dashboard', [
+                'totalSalesToday' => $totalSalesToday,
+                'totalSalesMonth' => $totalSalesMonth,
+                'lowStockProducts' => $lowStockProducts,
+                'outStockProducts' => $outStockProducts,
+                'expiredsMonth' => $expiredsMonth,
+                'expiringNextWeek' => $expiringNextWeek,
+                'expiredBatches' => $expiredBatches,
+                'expiredProducts' => $expiredProducts,
+            ])
+        @elseif ($user->role == 'user')
+            @include('user.user-dashboard', [
+                'totalSalesToday' => $totalSalesToday,
+                'totalSalesMonth' => $totalSalesMonth,
+            ])
+        @endif
     </div>
 </x-app-layout>

@@ -1,12 +1,14 @@
 <x-app-layout>
     <!-- Header -->
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center bg-white">
-            <h2 class="h5 text-dark font-weight-bold">
-                {{ __('Carrito de Ventas') }}
-            </h2>
-        </div>
+        <x-nav-link href="{{ route('cart.index') }}" :active="request()->routeIs('cart.index')">
+            {{ __('Buscar Producto') }}
+        </x-nav-link>
+        <x-nav-link href="{{ route('cart.details') }}" :active="request()->routeIs('cart.details')">
+            {{ __('Lista de Productos') }}
+        </x-nav-link>
     </x-slot>
+
     <!-- Contenido -->
     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
         <div class="container py-3">
@@ -107,7 +109,6 @@
             });
         }
 
-    
         function addCart(productId, button) {
             const quantityInput = button.closest('tr').querySelector('.quantity');
             const quantity = quantityInput.value;

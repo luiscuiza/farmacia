@@ -26,7 +26,7 @@ class CustomerController extends Controller
         return response()->json(['success' => true, 'message' => 'Cliente creado correctamente']);
     }
 
-    public function show($id)
+    public function info($id)
     {
         $customer = Customer::findOrFail($id);
         return response()->json($customer);

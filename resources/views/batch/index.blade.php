@@ -1,15 +1,26 @@
+@php
+    $user = Auth::user();
+@endphp
+
 <x-app-layout>
     <!-- Header -->
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center bg-white">
-            <h2 class="h5 text-dark font-weight-bold">
+        {{-- {{ __('Productos') }} --}}
+        <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.index')">
+            {{ __('Productos') }}
+        </x-nav-link>
+        @if ($user->role == 'admin')
+            <x-nav-link href="{{ route('batches.index') }}" :active="request()->routeIs('batches.index')">
                 {{ __('Lotes') }}
-            </h2>
-            <button class="btn btn-success d-flex align-items-center" onclick="showNew()">
-                <i class="fa fa-plus me-2"></i> Nuevo Lote
-            </button>
-        </div>
+            </x-nav-link>
+        @endif
     </x-slot>
+    <x-slot name="options">
+        <button class="btn btn-success d-flex align-items-center m-2.5" onclick="showNew()">
+            <i class="fa fa-plus me-2"></i> Nuevo Lote
+        </button>
+    </x-slot>
+    
     <!-- Contenido -->
     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
         <div class="container py-3">

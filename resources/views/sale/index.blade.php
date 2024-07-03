@@ -1,3 +1,8 @@
+@php
+    $user = Auth::user();
+@endphp
+
+
 <x-app-layout>
     
     <!-- Header -->
@@ -34,9 +39,11 @@
                                 <button class="btn btn-primary" onclick="showInfo({{ $sale->id }})">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <button class="btn btn-danger" onclick="confirmDelete({{ $sale->id }})">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                @if ($user->role == 'admin')
+                                    <button class="btn btn-danger" onclick="confirmDelete({{ $sale->id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
